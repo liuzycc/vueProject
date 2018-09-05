@@ -1,13 +1,23 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/login'
+import Home from '@/components/home/home'
+import Welcome from '@/components/home/welcome'
+import Users from '@/components/users/users'
 
 Vue.use(Router)
 
 const router = new Router({
   routes: [
-    { path: '/', redirect: '/login' },
-    { path: '/login', name: 'Login', component: Login }
+    { path: '/', redirect: '/home' },
+    { path: '/login', name: 'Login', component: Login },
+    {
+      path: '/home',
+      name: 'Home',
+      component: Home,
+      redirect: '/welcome',
+      children: [{ path: '/welcome', component: Welcome }, { path: '/users', component: Users }]
+    }
   ]
 })
 
