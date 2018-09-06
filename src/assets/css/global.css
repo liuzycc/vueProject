@@ -4,3 +4,21 @@ html,body,#app {
   padding: 0;
   margin: 0;
 }
+/* 在全局为面包血添加下margen */
+.el-breadcrumb {
+  margin-bottom: 15px;
+}
+
+.el-card {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important
+}
+
+.el-table {
+  font-size: 12px;
+  margin-top: 15px;
+}
+
+/* 分页样式 */
+.el-pagination {
+  margin-top: 15px;
+}

@@ -14,7 +14,7 @@
         <!-- 切换菜单的折叠和展开 -->
         <div class="toggleBar" @click="collapse = !collapse">|||</div>
         <!-- 菜单 -->
-        <el-menu default-active="2" router :collapse-transition="false" :collapse="collapse" unique-opened background-color="#333744" text-color="#fff" active-text-color="#409EFF">
+        <el-menu :default-active="itemPath" router :collapse-transition="false" :collapse="collapse" unique-opened background-color="#333744" text-color="#fff" active-text-color="#409EFF">
           <!-- el-submenu  是一级菜单 -->
           <el-submenu :index="item.id + ''" v-for="item in menus" :key="item.id" :style="collapse ? 'width:65px' : 'width:200px'">
             <!-- 这个template 是一级菜单的内容模板 -->
@@ -23,7 +23,7 @@
               <span>{{item.authName}}</span>
             </template>
             <!-- 这是二级菜单 -->
-            <el-menu-item :index="'/' + subItem.path" v-for="subItem in item.children" :key="subItem.id">
+            <el-menu-item :index="'/' + subItem.path" v-for="subItem in item.children" :key="subItem.id" @click="savePath('/' + subItem.path)">
               <i class="el-icon-menu"></i>
               <span slot="title">{{subItem.authName}}</span>
             </el-menu-item>
