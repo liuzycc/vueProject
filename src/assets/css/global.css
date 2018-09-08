@@ -3,6 +3,8 @@ html,body,#app {
   background-color: #2b4b6b;
   padding: 0;
   margin: 0;
+  /* 控制屏幕最小宽度 */
+  min-width:1024px; 
 }
 /* 在全局为面包血添加下margen */
 .el-breadcrumb {

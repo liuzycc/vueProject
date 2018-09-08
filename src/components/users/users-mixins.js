@@ -49,18 +49,26 @@ export default {
           { validator: checkEmail, trigger: 'blur' }
         ],
         mobile: [{ required: true, message: '请输入电话', trigger: 'blur' }]
-      }
+      },
+      // 分配权限对话框
+      powerDialogVisible: false,
+      // 分配权限对话框中的表单对象
+      powerForm: {},
+      // 所有角色列表
+      rolesList: {},
+      // 选中角色的ID
+      selectedRoleId: ''
     }
   },
   created() {
     this.getUserList()
+    // this.getRights()
   },
   methods: {
     // 根据查询条件和分页，获取用户列表
     async getUserList() {
       const { data: res } = await this.$http.get('users', { params: this.queryInfo })
       if (res.meta.status !== 200) return this.$message.error('查询用户列表失败')
-      console.log(res.data)
       this.total = res.data.total
       this.userList = res.data.users
     },
@@ -106,7 +114,6 @@ export default {
       // 获取当前用户数据
       const { data: res } = await this.$http.get(`users/${id}`)
       if (res.meta.status !== 200) return this.$message.error('查询当前用户数据信息失败')
-      console.log(res.data)
       this.editForm = res.data
       // this.editForm.role_id = res.data.role_id
       // this.editForm.username = res.data.username
@@ -121,8 +128,8 @@ export default {
     // 提交edit
     editSubmit() {
       // 1.校验
-      this.$refs.editRuleForm.validate(async valid => {
-        if (!valid) return
+      this.$refs.editRuleForm.validate(async v => {
+        if (!v) return
         // 下面开始提交数据
         const { data: res } = await this.$http.put(`users/${this.editForm.id}`, {
           email: this.editForm.email,
@@ -135,8 +142,30 @@ export default {
         // 重置表单
         this.getUserList()
         this.editDialogVisible = false
-
       })
+    },
+    // 赋值分配权限对话框
+    assign(userInfo) {
+      this.powerForm = userInfo
+      this.powerDialogVisible = !this.powerDialogVisible
+      this.getRights()
+    },
+    // 获取权限列表
+    async getRights() {
+      const { data: res } = await this.$http.get('roles')
+      if (res.meta.status !== 200) return this.$message.error('获取权限列表失败')
+      this.rolesList = res.data
+    },
+    // 更新角色信息
+    async savePower() {
+      const { data: res } = await this.$http.put(`users/${this.powerForm.id}/role`, {
+        rid: this.selectedRoleId
+      })
+      if (res.meta.status !== 200) return this.$message.error('更新失败')
+      this.$message.success('更新角色权限成功')
+      this.selectedRoleId = ''
+      this.getUserList()
+      this.powerDialogVisible = false
     }
   }
 }

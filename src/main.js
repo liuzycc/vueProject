@@ -8,6 +8,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/global.css'
 // 导入axios
 import axios from 'axios'
+// 树形表格组件
+import treeTable from 'vue-table-with-tree-grid'
+
+Vue.component('tree-table', treeTable)
 
 // 配置axios
 Vue.prototype.$http = axios
